@@ -1,0 +1,36 @@
+# Arquivos ignorados pelo Git
+
+# Dependências
+/vendor/
+/node_modules/
+
+# Arquivos de ambiente
+.env
+.env.local
+.env.production
+
+# Logs
+/logs/
+*.log
+
+# Cache
+/cache/
+/tmp/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Arquivos de backup
+*.bak
+*.backup
+
+# Arquivos temporários
+*.tmp
+*.temp

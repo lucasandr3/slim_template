@@ -1,0 +1,22 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use App\Config\Database;
+use Dotenv\Dotenv;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+// Carregar variáveis de ambiente
+$dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
+
+// Executar migração
+Database::init();
+Database::createTables();
+
+echo "✅ Migração concluída com sucesso!\n";
+echo "Tabelas criadas:\n";
+echo "- users\n";
+echo "- products\n";

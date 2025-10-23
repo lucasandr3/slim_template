@@ -1,0 +1,24 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Dotenv\Dotenv;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+// Carregar variáveis de ambiente
+$dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
+
+// Iniciar servidor de desenvolvimento
+$host = $_ENV['APP_HOST'] ?? 'localhost';
+$port = $_ENV['APP_PORT'] ?? '8000';
+
+echo "🚀 Iniciando servidor de desenvolvimento...\n";
+echo "📍 URL: http://{$host}:{$port}\n";
+echo "📁 Document Root: " . __DIR__ . "/../public\n";
+echo "⏹️  Para parar: Ctrl+C\n\n";
+
+$command = "php -S {$host}:{$port} -t " . __DIR__ . "/../public";
+passthru($command);

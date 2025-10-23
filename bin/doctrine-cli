@@ -1,0 +1,107 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use App\Commands\DoctrineCommands;
+use Dotenv\Dotenv;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+// Carregar variáveis de ambiente
+$dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
+
+// Verificar argumentos da linha de comando
+if ($argc < 2) {
+    showHelp();
+    exit(1);
+}
+
+$command = $argv[1];
+$doctrineCommands = new DoctrineCommands();
+
+try {
+    switch ($command) {
+        case 'create-schema':
+            $doctrineCommands->createSchema();
+            break;
+            
+        case 'update-schema':
+            $doctrineCommands->updateSchema();
+            break;
+            
+        case 'drop-schema':
+            $doctrineCommands->dropSchema();
+            break;
+            
+        case 'validate-schema':
+            $doctrineCommands->validateSchema();
+            break;
+            
+        case 'generate-sql':
+            $doctrineCommands->generateSql();
+            break;
+            
+        case 'list-entities':
+            $doctrineCommands->listEntities();
+            break;
+            
+        case 'show-entity':
+            if ($argc < 3) {
+                echo "❌ Uso: doctrine-cli show-entity <NomeDaEntidade>\n";
+                echo "Exemplo: doctrine-cli show-entity App\\Entities\\User\n";
+                exit(1);
+            }
+            $doctrineCommands->showEntity($argv[2]);
+            break;
+            
+        case 'help':
+        case '--help':
+        case '-h':
+            showHelp();
+            break;
+            
+        default:
+            echo "❌ Comando desconhecido: {$command}\n";
+            showHelp();
+            exit(1);
+    }
+} catch (\Exception $e) {
+    echo "❌ Erro: " . $e->getMessage() . "\n";
+    exit(1);
+}
+
+function showHelp(): void
+{
+    echo "🔧 Doctrine CLI - Comandos disponíveis:\n\n";
+    echo "📋 COMANDOS DE ESQUEMA:\n";
+    echo "  create-schema     Criar todas as tabelas baseadas nas entidades\n";
+    echo "  update-schema     Atualizar esquema do banco de dados\n";
+    echo "  drop-schema       Dropar todas as tabelas (CUIDADO!)\n";
+    echo "  validate-schema   Validar mapeamento das entidades\n";
+    echo "  generate-sql      Gerar SQL de criação das tabelas\n\n";
+    
+    echo "📋 COMANDOS DE ENTIDADES:\n";
+    echo "  list-entities     Listar todas as entidades\n";
+    echo "  show-entity       Mostrar informações de uma entidade específica\n\n";
+    
+    echo "📋 COMANDOS DOCTRINE ORIGINAIS:\n";
+    echo "  doctrine          Executar comandos originais do Doctrine\n\n";
+    
+    echo "📋 EXEMPLOS DE USO:\n";
+    echo "  ./bin/doctrine-cli create-schema\n";
+    echo "  ./bin/doctrine-cli list-entities\n";
+    echo "  ./bin/doctrine-cli show-entity App\\Entities\\User\n";
+    echo "  ./bin/doctrine orm:mapping:describe App\\Entities\\User\n\n";
+    
+    echo "📋 COMANDOS DOCTRINE ORIGINAIS MAIS ÚTEIS:\n";
+    echo "  ./bin/doctrine orm:mapping:describe <Entity>     Descrever mapeamento\n";
+    echo "  ./bin/doctrine orm:validate-schema                Validar esquema\n";
+    echo "  ./bin/doctrine orm:schema-tool:create             Criar esquema\n";
+    echo "  ./bin/doctrine orm:schema-tool:update             Atualizar esquema\n";
+    echo "  ./bin/doctrine orm:schema-tool:drop               Dropar esquema\n";
+    echo "  ./bin/doctrine migrations:generate                Gerar migração\n";
+    echo "  ./bin/doctrine migrations:migrate                 Executar migrações\n";
+    echo "  ./bin/doctrine migrations:status                  Status das migrações\n";
+}
