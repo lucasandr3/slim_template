@@ -21,7 +21,7 @@ class TokenCacheService
     /**
      * Adiciona token à blacklist
      */
-    public function blacklistToken(string $token, int $ttl = null): void
+    public function blacklistToken(string $token, ?int $ttl = null): void
     {
         $ttl = $ttl ?? $this->defaultTtl;
         $cacheItem = $this->cache->getItem('blacklist_' . hash('sha256', $token));
@@ -42,7 +42,7 @@ class TokenCacheService
     /**
      * Cacheia dados do usuário
      */
-    public function cacheUserData(int $userId, array $userData, int $ttl = null): void
+    public function cacheUserData(int $userId, array $userData, ?int $ttl = null): void
     {
         $ttl = $ttl ?? $this->defaultTtl;
         $cacheItem = $this->cache->getItem('user_' . $userId);
