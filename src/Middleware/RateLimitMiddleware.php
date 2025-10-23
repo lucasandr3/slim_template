@@ -15,7 +15,7 @@ class RateLimitMiddleware
     private int $windowSeconds;
     private array $requests = [];
 
-    public function __construct(int $maxRequests = null, int $windowSeconds = null)
+    public function __construct(?int $maxRequests = null, ?int $windowSeconds = null)
     {
         $this->maxRequests = $maxRequests ?? (int)($_ENV['RATE_LIMIT_REQUESTS'] ?? 100);
         $this->windowSeconds = $windowSeconds ?? (int)($_ENV['RATE_LIMIT_WINDOW'] ?? 60);
